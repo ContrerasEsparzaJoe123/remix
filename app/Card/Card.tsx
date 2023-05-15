@@ -44,9 +44,9 @@ export function MainCard(props: { questionData: any, handlers: any, listState: a
       padding="lg"
       radius="md"
       withBorder
-      bg="#F9FAFB"
-      mih="25rem"
-      w={{ xs: "80%", sm: "500px", lg: "800px" }}
+      // bg="#F9FAFB"
+      mih="16rem"
+      w={{ base: "100%", sm: "100%", md: "100%", lg: "100%" }}
     >
       <Card.Section>
         <Group position="apart" mt="md" mb="xs" mx="md">

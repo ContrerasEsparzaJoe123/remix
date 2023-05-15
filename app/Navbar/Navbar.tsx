@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar, ScrollArea, createStyles, rem, Flex, Title, Group, Box, ActionIcon } from "@mantine/core";
+import { Navbar, ScrollArea, createStyles, rem, Flex, Title, Group, Box, ActionIcon, getBreakpointValue, rem, em } from "@mantine/core";
 import { IconArrowNarrowLeft, IconAddressBook, IconBuildingSkyscraper, IconBox, IconLayoutSidebarLeftCollapse, } from "@tabler/icons-react";
 import { LinksGroup } from "~/NavbarLinksGroup/NavbarLinksGroup";
 import { DndList } from "~/DndList/DndList";
@@ -48,6 +48,11 @@ const useStyles = createStyles((theme) => ({
         ? theme.colors.dark[6]
         : theme.colors.gray[0],
     paddingBottom: 0,
+    // [`@media (max-width: ${em(800)})`]: {
+    //   background: 'blue',
+    //   width: '400px'
+    // },
+    
   },
 
   links: {
@@ -58,28 +63,30 @@ const useStyles = createStyles((theme) => ({
   section: {
     maxHeight: rem(80),
     
-    // paddingTop: theme.spacing.xl,
     borderBottom: `${rem(1)} solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
   },
 
   linksInner: {
-    // paddingTop: theme.spacing.lg,
-    // paddingBottom: theme.spacing.xl,
-    // flex: "min-content",
-    // flex: `0 0 ${rem(60)}`,
-    /*
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-*/
-    // display: "flex",
-    // flexDirection: "column",
-    // alignItems: "center",
     borderRight: `${rem(1)} solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
     }`,
+    [`@media (max-width: ${em(800)})`]: {
+      // backgroundColor: theme.colors.orange[6],
+      width: '200px',
+    },
+
   },
+
+  tools: {
+    // background: 'green',
+    [`@media (max-width: ${em(800)})`]: {
+      width: '300px',
+    },
+  }
+
+ 
 }));
 
 interface OptionInterface {
@@ -95,7 +102,7 @@ interface QuestionInterface {
 
 export default function NavbarNested(props: { opened: boolean }) {
   const { classes, theme } = useStyles();
-  const [asideOpened, setAsideOpened] = useState(false);
+  const [asideOpened, setAsideOpened] = useState(true);
   const links = mockdata.map((item, index) => (
     <LinksGroup
       links={item.links}
@@ -112,10 +119,13 @@ export default function NavbarNested(props: { opened: boolean }) {
       px="md"
       hiddenBreakpoint="sm"
       hidden={!props.opened}
-      width={{ sm: 200, lg: asideOpened ? "fit-content" : 500 }}
+      width={{ sm: asideOpened ? 400 : 200, md: asideOpened ? 490 : 282 , lg: asideOpened ? 490 : 282 }}
+      // bg={{ xs: 'yellow', sm: 'red', md: 'blue', lg: 'green' }}
       className={classes.navbar}
-    >
-      <Navbar.Section grow className={classes.links} component={ScrollArea}>
+      sx={{ transition: "0.3s ease" }}
+    > 
+    {/* component={ScrollArea} */}
+      <Navbar.Section grow className={classes.links} sx={{ overflowY: 'auto' }} >
         <Flex direction="row" justify="flex-start" align="flex-start">
           <div className={classes.linksInner}>
             <Box className={classes.section} ml="lg" mb="lg" py='sm'>
@@ -123,34 +133,37 @@ export default function NavbarNested(props: { opened: boolean }) {
             </Box>
             {links}
           </div>
-          <Box w={{ base: 320, sm: 480, lg: "100%" }} hidden={asideOpened}>
-            <Group
-              className={classes.section}
-              position="apart"
-              align="center"
-              px="lg"
-              mb="lg"
-              py='xs'
-            >
-              <Title
-                order={6}
-                weight={400}
-                size="sm"
-                color={theme.colors.blue[7]}
+          <Box w={{ base: 320, sm: 480, lg: asideOpened ? "100%" : 0 }} className={classes.tools} sx={{ overflow: "hidden", transition: '0.3s ease'}} >
+            <Box>
+              <Group
+                className={classes.section}
+                position="apart"
+                align="center"
+                px="lg"
+                mb="lg"
+                py='xs'
               >
-                Fields
-              </Title>
-              <ActionIcon
-                color="dark"
-                size="lg"
-                radius="xl"
-                variant="transparent"
-                onClick={() => setAsideOpened((o) => !o)}
-              >
-                {/*<IconAdjustments size="1.625rem" />*/}
-                <IconLayoutSidebarLeftCollapse />
-              </ActionIcon>
-            </Group>
+                <Title
+                  order={6}
+                  weight={400}
+                  size="sm"
+                  color={theme.colors.blue[7]}
+                >
+                  Fields
+                </Title>
+                <ActionIcon
+                  color="dark"
+                  size="lg"
+                  radius="xl"
+                  variant="transparent"
+                  // onClick={() => setAsideOpened((o) => !o)}
+                  onClick={() => setAsideOpened(!asideOpened)}
+                >
+                  {/*<IconAdjustments size="1.625rem" />*/}
+                  <IconLayoutSidebarLeftCollapse />
+                </ActionIcon>
+              </Group>
+            </Box>
             <Box mx="lg">
               <DndList />
             </Box>

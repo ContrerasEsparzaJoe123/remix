@@ -122,7 +122,7 @@ export default function AppShellDemo() {
       >
           <Droppable droppableId="dnd-list2" direction="horizontal">
             {(provided) => (
-              <ScrollArea h="100vh">
+              // <ScrollArea h="100vh">
                 <Flex
                   {...provided.droppableProps}
                   ref={provided.innerRef}
@@ -130,9 +130,10 @@ export default function AppShellDemo() {
                   mx="auto"
                   direction='column'
                   gap='10px'   
-                  p={{ base: 'sm', sm:'md', lg: 'lg' }} 
+                  p={{ base: 'sm', sm:'md', lg: '50px' }} 
                   justify='center' 
                   align='center'
+                  sx={{ overflowY: 'auto' }}
                             
                 >
                   {provided.placeholder}
@@ -149,7 +150,7 @@ export default function AppShellDemo() {
                     </Flex>
                   </Button>
                 </Flex>
-              </ScrollArea>
+              // </ScrollArea>
             )}
             
           </Droppable>

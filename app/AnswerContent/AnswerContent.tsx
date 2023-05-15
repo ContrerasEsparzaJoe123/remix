@@ -1,4 +1,4 @@
-import { Box, createStyles, Group, rem, Text, Textarea, TextInput, Button, Flex } from "@mantine/core";
+import { Box, createStyles, Group, rem, Text, Textarea, TextInput, Button, Flex, ScrollArea } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { IconAt, IconGripVertical, IconCirclePlus } from "@tabler/icons-react";
@@ -7,15 +7,13 @@ import { MultiChoiceContent } from "./MultiChoice";
 const useStyles = createStyles((theme) => ({
   item: {
     display: "flex",
+    width: "100%",
     alignItems: "center",
     borderRadius: theme.radius.md,
-    border: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
-    }`,
     padding: `${theme.spacing.sm} ${theme.spacing.xl}`,
     paddingLeft: `calc(${theme.spacing.xl} - ${theme.spacing.md})`, // to offset drag handle
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
+    // backgroundColor:
+    //   theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
     marginBottom: theme.spacing.sm,
   },
 
@@ -154,7 +152,9 @@ export function AnswerContent({ type, options, setQuestions, questions, question
       <Droppable droppableId="dnd-list" direction="vertical">
         {(provided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            {items}
+            <ScrollArea h='200px'>
+              {items}
+            </ScrollArea>
             {provided.placeholder}
           </div>
         )}

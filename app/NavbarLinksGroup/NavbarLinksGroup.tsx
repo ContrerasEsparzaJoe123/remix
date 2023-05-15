@@ -33,7 +33,7 @@ const useStyles = createStyles((theme) => ({
 
   link: {
     fontWeight: 500,
-    // background: 'yellow',
+    width: '100%',
     display: "block",
     textDecoration: "none",
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
@@ -41,14 +41,7 @@ const useStyles = createStyles((theme) => ({
     // marginLeft: rem(30),
     fontSize: theme.fontSizes.sm,
     // Media query with value from theme
-    [`@media (min-width: ${em(getBreakpointValue(theme.breakpoints.lg) - 1)})`]:
-      {
-        width: "17rem",
-      },
-    [`@media (max-width: ${em(getBreakpointValue(theme.breakpoints.md) - 1)})`]:
-      {
-        width: "10rem",
-      },
+    
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
@@ -83,6 +76,14 @@ const useStyles = createStyles((theme) => ({
   chevron: {
     transition: "transform 200ms ease",
   },
+
+  links: {
+    width: "280px",
+    
+    [`@media (max-width: ${em(800)})`]: {
+      width: '200px',
+    },
+  }
 }));
 
 interface LinksGroupProps {
@@ -113,12 +114,13 @@ export function LinksGroup({
       // description={item.description}
       // rightSection={item.rightSection}
       // icon={<item.icon size="1rem" stroke={1.5} />}
-      onClick={() => {
-        if (link.label === "Task Forms") {
-          setAsideOpened(false);
-        }
-        setActive(link.key);
-      }}
+      // onClick={() => {
+      //   if (link.label === "Task Forms") {
+      //     setAsideOpened(false);
+      //   }
+      //   setActive(link.key);
+      // }}
+      onClick={() => setAsideOpened(true)}
       // variant="subtle"
       // className={classes.link}
       // sx={{ width: "17rem" }}
@@ -167,7 +169,7 @@ export function LinksGroup({
         </Group>
       </UnstyledButton>
       <Group spacing={0}>
-        {hasLinks ? <Collapse pl='16px' w='280px' in={opened}>{items}</Collapse> : null}
+        {hasLinks ? <Collapse pl='16px' className={classes.links} in={opened}>{items}</Collapse> : null}
       </Group>
     </>
   );
