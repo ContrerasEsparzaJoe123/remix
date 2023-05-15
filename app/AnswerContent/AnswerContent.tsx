@@ -1,15 +1,7 @@
-import {
-  Box,
-  createStyles,
-  Group,
-  rem,
-  Text,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Box, createStyles, Group, rem, Text, Textarea, TextInput, Button, Flex } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { IconAt, IconGripVertical } from "@tabler/icons-react";
+import { IconAt, IconGripVertical, IconCirclePlus } from "@tabler/icons-react";
 import { MultiChoiceContent } from "./MultiChoice";
 
 const useStyles = createStyles((theme) => ({
@@ -54,28 +46,33 @@ const useStyles = createStyles((theme) => ({
 
 export type answerType = "Radio" | "Checkboxes" | "Short Answer" | "Long Answer" | "Email";
 export interface CardContentProps {
-  type: answerType;
+  type: answerType,
+  options: [],
+  setQuestions: any,
+  questions: any,
+  questionData: any
 }
 
-export function AnswerContent({ type }: CardContentProps): JSX.Element {
+export function AnswerContent({ type, options, setQuestions, questions, questionData }: CardContentProps): JSX.Element {
   const { classes, cx } = useStyles();
   const mockData = [
-    { id: "1", answer1: "Carbon", correctAnswer: true },
-    { id: "2", answer2: "Nitrogen", correctAnswer: false },
-    { id: "3", answer2: "Nitrogen", correctAnswer: false },
+    { id: "1", option: "Carbon", isCorrectAnswer: true },
+    { id: "2", option: "Nitrogen", isCorrectAnswer: false },
+    { id: "3", option: "Nitrogen", isCorrectAnswer: false },
   ];
-  const [state, handlers] = useListState(mockData);
+  const [state, handlers] = useListState(options);
   let isMultiChoice: boolean = false;
-  let multiChoice: React.ReactNode;
+  // let multiChoice: React.ReactNode;
   let answerContent: React.ReactNode;
+  let multiChoice: any;
 
   switch (type) {
     case "Radio":
-      multiChoice = <MultiChoiceContent type={type} />;
+      multiChoice = (option) => <MultiChoiceContent option={option} type={type} questions={questions} questionData={questionData} setQuestions={setQuestions} options={options}/>;
       isMultiChoice = true;
       break;
     case "Checkboxes":
-      multiChoice = <MultiChoiceContent type={type} />;
+      multiChoice = (option) => <MultiChoiceContent option={option} type={type} questions={questions} questionData={questionData} setQuestions={setQuestions} options={options}/>;
       isMultiChoice = true;
       break;
     case "Short Answer":
@@ -97,10 +94,27 @@ export function AnswerContent({ type }: CardContentProps): JSX.Element {
         />
       );
       break;
+  };
+
+  const addOption = () => {
+    const newOption = { id: Math.floor(Math.random() * 999), option: "Pluton", isCorrectAnswer: true }
+
+    const myQuestions = questions.map(question => {
+      if(question.id === questionData.id) {
+        question.options.push(newOption);
+        return question;
+      } else {
+        return question;
+      }
+    });
+
+    setQuestions(myQuestions);
+
   }
 
-  const items = state.map((item, index) => (
-    <Draggable key={item.id} index={index} draggableId={item.id}>
+  const items = options?.length > 0
+  ?  options.map((item, index) => (
+    <Draggable key={item.id} index={index} draggableId={JSON.stringify(item.id)} setQuestions={setQuestions} questions={questions}>
       {(provided, snapshot) => (
         <Group
           bg="transparent"
@@ -117,11 +131,19 @@ export function AnswerContent({ type }: CardContentProps): JSX.Element {
             <IconGripVertical size="1.05rem" stroke={1.5} />
           </div>
           {/* <MultiChoiceContent type={multiChoice} /> */}
-          {multiChoice}
+          {multiChoice(item)}
         </Group>
       )}
     </Draggable>
-  ));
+  ))
+  : <Box p='lg'>
+    <Button variant='default'w='100%' onClick={addOption}>
+      <Flex align='center' gap='5px'>
+        <IconCirclePlus/>
+        Add option
+      </Flex>
+    </Button>
+  </Box>
 
   return isMultiChoice ? (
     <DragDropContext

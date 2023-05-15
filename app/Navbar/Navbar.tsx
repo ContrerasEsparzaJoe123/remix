@@ -1,24 +1,8 @@
-import {
-  Navbar,
-  ScrollArea,
-  createStyles,
-  rem,
-  Flex,
-  Title,
-  Group,
-  Box,
-  ActionIcon,
-} from "@mantine/core";
-import {
-  IconArrowNarrowLeft,
-  IconAddressBook,
-  IconBuildingSkyscraper,
-  IconBox,
-  IconLayoutSidebarLeftCollapse,
-} from "@tabler/icons-react";
+import { useState } from "react";
+import { Navbar, ScrollArea, createStyles, rem, Flex, Title, Group, Box, ActionIcon } from "@mantine/core";
+import { IconArrowNarrowLeft, IconAddressBook, IconBuildingSkyscraper, IconBox, IconLayoutSidebarLeftCollapse, } from "@tabler/icons-react";
 import { LinksGroup } from "~/NavbarLinksGroup/NavbarLinksGroup";
 import { DndList } from "~/DndList/DndList";
-import { useState } from "react";
 
 const mockdata = [
   {
@@ -73,8 +57,8 @@ const useStyles = createStyles((theme) => ({
 
   section: {
     maxHeight: rem(80),
-    paddingBottom: theme.spacing.xl,
-    paddingTop: theme.spacing.xl,
+    
+    // paddingTop: theme.spacing.xl,
     borderBottom: `${rem(1)} solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
@@ -98,6 +82,17 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+interface OptionInterface {
+  option: string,
+  isCorrectAnswer: boolean
+};
+
+interface QuestionInterface {
+  question: string,
+  type: string,
+  options: Array<OptionInterface>
+};
+
 export default function NavbarNested(props: { opened: boolean }) {
   const { classes, theme } = useStyles();
   const [asideOpened, setAsideOpened] = useState(false);
@@ -117,19 +112,13 @@ export default function NavbarNested(props: { opened: boolean }) {
       px="md"
       hiddenBreakpoint="sm"
       hidden={!props.opened}
-      width={{ sm: 200, lg: asideOpened ? "fit-content" : 700 }}
+      width={{ sm: 200, lg: asideOpened ? "fit-content" : 500 }}
       className={classes.navbar}
     >
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
-        {/*
-        <Group grow>
-          <div className={classes.linksInner}>{links}</div>
-          <div>content</div>
-        </Group>
-*/}
         <Flex direction="row" justify="flex-start" align="flex-start">
           <div className={classes.linksInner}>
-            <Box className={classes.section} ml="lg" mb="lg">
+            <Box className={classes.section} ml="lg" mb="lg" py='sm'>
               <IconArrowNarrowLeft />
             </Box>
             {links}
@@ -141,11 +130,12 @@ export default function NavbarNested(props: { opened: boolean }) {
               align="center"
               px="lg"
               mb="lg"
+              py='xs'
             >
               <Title
                 order={6}
                 weight={400}
-                size="h2"
+                size="sm"
                 color={theme.colors.blue[7]}
               >
                 Fields

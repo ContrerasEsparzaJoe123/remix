@@ -33,11 +33,12 @@ const useStyles = createStyles((theme) => ({
 
   link: {
     fontWeight: 500,
+    // background: 'yellow',
     display: "block",
     textDecoration: "none",
     padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-    paddingLeft: rem(31),
-    marginLeft: rem(30),
+    // paddingLeft: rem(31),
+    // marginLeft: rem(30),
     fontSize: theme.fontSizes.sm,
     // Media query with value from theme
     [`@media (min-width: ${em(getBreakpointValue(theme.breakpoints.lg) - 1)})`]:
@@ -166,7 +167,7 @@ export function LinksGroup({
         </Group>
       </UnstyledButton>
       <Group spacing={0}>
-        {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+        {hasLinks ? <Collapse pl='16px' w='280px' in={opened}>{items}</Collapse> : null}
       </Group>
     </>
   );

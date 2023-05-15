@@ -28,9 +28,16 @@ import type { answerType } from "~/AnswerContent/AnswerContent";
 import { AnswerContent } from "~/AnswerContent/AnswerContent";
 
 const useStyles = createStyles((theme) => ({}));
-export function MainCard() {
+
+export function MainCard(props: { questionData: any, handlers: any, listState: any, setQuestions: any, questions: any }) {
   const { classes, theme } = useStyles();
-  const [value, setValue] = useState<answerType>("Radio");
+  const { questionData } = props;
+  const [value, setValue] = useState<answerType>(questionData.type || 'Radio');
+
+  const showFilter = () => {
+    props.setQuestions(props.handlers.filter(element => element.id !== questionData.id));
+  }
+
   return (
     <Card
       shadow="sm"
@@ -38,8 +45,8 @@ export function MainCard() {
       radius="md"
       withBorder
       bg="#F9FAFB"
-      mih="20rem"
-      w={{ xs: "100%", sm: "100%", lg: "50rem" }}
+      mih="25rem"
+      w={{ xs: "80%", sm: "500px", lg: "800px" }}
     >
       <Card.Section>
         <Group position="apart" mt="md" mb="xs" mx="md">
@@ -56,7 +63,7 @@ export function MainCard() {
               </Tabs.Tab>
             </Tabs.List>
           </Tabs>
-          <ActionIcon size="xl" radius="xl" variant="transparent">
+          <ActionIcon size="xl" radius="xl" variant="transparent" onClick={showFilter}>
             <IconTrashX size="1.625rem" />
           </ActionIcon>
         </Group>
@@ -138,7 +145,7 @@ export function MainCard() {
         </Grid>
       </Card.Section>
       <Card.Section>
-        <AnswerContent type={value} />
+        <AnswerContent type={value} options={questionData.options} questionData={questionData} questions={props.questions} setQuestions={props.setQuestions}/>
       </Card.Section>
     </Card>
   );
